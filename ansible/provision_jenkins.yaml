@@ -1,0 +1,25 @@
+---
+- name: Configure Jenkins Server
+  hosts: Jenkins
+  tasks:
+
+    - name: Install Java 
+      apt:
+        update_cache: yes
+        name: default-jdk
+      become: yes
+        
+    - name: ensure the jenkins apt repository key is installed
+      apt_key: url=https://pkg.jenkins.io/debian-stable/jenkins.io.key state=present
+      become: yes
+
+    - name: Jenkins Repo
+      apt_repository: repo='deb https://pkg.jenkins.io/debian-stable binary/' state=present
+      become: yes
+
+    - name: Install Jenkins
+      apt: name=jenkins update_cache=yes
+      become: yes
+
+    - name: Run Jenkins
+      service: name=jenkins state=started

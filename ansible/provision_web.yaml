@@ -1,0 +1,21 @@
+#going to run a dockerized python app (python app pulled from the internet)
+# want docker installed, pip3
+
+- name: Provision Web Servers
+  hosts: webservers
+  tasks: 
+
+  - name: install pip3
+    apt:
+      update_cache: yes
+      name: python3-pip
+    become: yes
+
+  - name: Install Docker 
+    ansible.builtin.shell: cd ~ && curl -fsSL https://get.docker.com -o get-docker.sh && sudo sh get-docker.sh
+
+  - name: Start Docker
+    ansible.builtin.shell: |
+        systemctl start docker
+        systemctl enable docker
+    become: yes 
